@@ -1,0 +1,32 @@
+clc 
+clear all
+
+A=[1 0 0 1 0 0 0;0 1 0 0 1 0 0; -1 1 0 0 0 1 0; -1 0 2 0 0 0 1];
+B=[4;4;6;4];
+C=[-1 2 -1 0 0 0 0];
+n=size(A,2);
+m=size(A,1);
+
+if n>m
+    ncm = nchoosek(n, m);
+    p = nchoosek(1:n, m);
+    sol=[];
+    for i=1:ncm
+        y = zeros(n,1);
+        A1 = A(:,p(i,:));
+        if det(A1)~=0
+            X = A1\B;
+            if all(X>=0)
+                y(p(i,:)) = X;
+                sol = [sol y];
+            end
+        end
+    end
+else
+    error('no of avriables are less than number of constraints')
+end
+
+z = C*sol;
+[obj,index] = max(z);
+BFS = sol(:,index);
+optimal_value = [BFS' obj]

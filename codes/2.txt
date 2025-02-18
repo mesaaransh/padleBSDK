@@ -1,0 +1,36 @@
+clc;
+clear all;
+
+A = [1, 1 ; 2, -1];
+B = [6; 9];
+C = [3, -1];
+
+x1 = 0:0.5:max(B./A(:,1));
+n = size(A, 1);
+for i = 1:n
+    
+    x2 = (B(i) - A(i, 1)*x1)/A(i, 2);
+    x2 = max(0,x2)
+    plot(x1, x2);
+    hold on;
+end
+xlabel('Values of x1')
+ylabel('Values of x2')
+grid on
+
+A = [A; eye(2)];
+B = [B; zeros(2,1)];
+pt=[]
+for i=1:size(A,1)
+    for j=i+1:size(A,1)
+        AA = [A(i,:); A(j,:)];
+        BB = [B(i); B(j)];
+        if(det(AA) ~= 0)
+            X = inv(AA)*BB;
+            if(X>=0)
+                pt = [pt X]
+            end
+        end
+    end
+end
+disp(pt)
