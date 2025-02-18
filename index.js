@@ -18,4 +18,4 @@ app.get("/2", function(req, res){
     res.send(fileContent)
 })
 
-app.listen(8000, ()=>{console.log("----------AppStarted-----------");})
+app.listen(process.env.PORT || 8000, ()=>{console.log("----------AppStarted-----------");})
