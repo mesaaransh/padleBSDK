@@ -1,0 +1,44 @@
+cost = [2 7 4;
+        3 3 1;
+        5 5 4;
+        1 6 2];
+
+supply = [5 8 7 14];
+demand = [7 9 18];
+[m, n] = size(cost);
+
+if sum(supply) < sum(demand)
+    cost(end+1, :) = zeros(1, n);
+    supply(end+1) = sum(demand) - sum(supply);
+else
+    cost(:, end+1) = zeros(m, 1);
+    demand(end+1) = sum(supply) - sum(demand);
+end
+
+[m, n] = size(cost);
+X = zeros(m, n);
+i_cost = cost;
+
+total_cost = 0;
+
+while any(supply) ~= 0 || any(demand) ~= 0
+
+    min_cost = min(cost(:));
+    [r, c] = find(cost == min_cost);
+    y = min(supply(r), demand(c));
+    [aloc, index] = max(y);
+
+    rr = r(index);
+    cc = c(index);
+    
+    total_cost = total_cost + (aloc*cost(rr, cc));
+
+    X(rr, cc) = aloc;
+    supply(rr) = supply(rr) - aloc;
+    demand(cc) = demand(cc) - aloc;
+    cost(rr, cc) = inf;
+    disp(X)
+
+end
+
+disp(total_cost)
